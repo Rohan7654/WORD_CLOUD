@@ -12,15 +12,16 @@ from os import path
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 pdfReader = PyPDF4.PdfFileReader(open('doc.pdf', 'rb'))
+from nltk.corpus import stopwords
 
-print(pdfReader.numPages)
+##print(pdfReader.numPages)
 
 text = ''
 
 for page in pdfReader.pages:
     text += page.extractText()
 
-print(text)
+##print(text)
 
 def remove_num(text):
     text = ''.join([i for i in text if not i.isdigit()])
@@ -54,7 +55,10 @@ def remove_extra_space(text):
 
 text = np.vectorize(remove_extra_space)(text)
 
-stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the","Mr", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
+##stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the","Mr", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
+
+stop_words = set(stopwords.words('english'))
+
 def remove_stopwords(text):
     word_list = text.split()
     word_list = [word for word in word_list if word not in stop_words]
@@ -63,7 +67,8 @@ def remove_stopwords(text):
 
 text = np.vectorize(remove_stopwords)(text)
 text = text.tolist()
-print(text)
+
+##print(text)
 
 mask = np.array(Image.open(r'C:\Users\Rohan\Desktop\kntka.png'))
 plt.imshow(mask)
@@ -77,7 +82,9 @@ plt.figure(figsize=[20,15])
 plt.imshow(wordcloud.recolor(color_func=image_colors), interpolation="bilinear")
 plt.axis("off")
 plt.show()
-##wordcloud.to_file("assignment.png")
-##img = cv2.imread("assignment.png")
-##cv2.imshow("out",img)
-print("done")
+
+wordcloud.to_file("assignment.png")
+img = cv2.imread("assignment.png")
+cv2.imshow("out",img)
+
+##print("done")
